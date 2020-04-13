@@ -8,8 +8,8 @@ package application;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
 /**
@@ -22,8 +22,12 @@ public class Program extends Application {
     public void start(Stage primaryStage) {
 	try {
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));	// Obtendo configurações da cena de um arquivo de extensão .fxml
-	    Parent parent = loader.load();		// Objeto principal da view
-	    Scene mainScene = new Scene(parent);	// "Configurando" a cena
+	    ScrollPane scrollPane = loader.load();	// Objeto principal (subclasse de Parent) da view
+	    
+	    scrollPane.setFitToHeight(true);		// Configurando ajuste do objeto ao redimensionamento da tela
+	    scrollPane.setFitToWidth(true);
+	    
+	    Scene mainScene = new Scene(scrollPane);	// "Configurando" a cena
 	    primaryStage.setScene(mainScene);		// "Montando" a cena no palco
 	    primaryStage.setTitle("Projeto - Modelo de aplicação desktop genérica");	// Título do palco
 	    primaryStage.show();			// Apresentando o palco

@@ -12,11 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Jeferson Willian
- */
-public class Program extends Application {
+public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
@@ -36,9 +32,6 @@ public class Program extends Application {
 	}
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
 	launch(args);
     }

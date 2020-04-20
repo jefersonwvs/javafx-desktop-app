@@ -13,7 +13,7 @@
             </extension>
         </buildExtensions>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>video_264_ProjetoAplicacaoDesktop_GUI_JavaFX_BD_JDBC</name>
+            <name>video_264_ProjetoAplicacaoDesktop</name>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

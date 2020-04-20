@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package application;
+    package application;
 
 import java.io.IOException;
 import javafx.application.Application;
@@ -14,6 +9,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    private static Scene mainScene; //referência "exposta", para ser possível carregar outras views na view principal
+    
     @Override
     public void start(Stage primaryStage) {
 	try {
@@ -23,13 +20,17 @@ public class Main extends Application {
 	    scrollPane.setFitToHeight(true);		// Configurando ajuste do objeto ao redimensionamento da tela
 	    scrollPane.setFitToWidth(true);
 	    
-	    Scene mainScene = new Scene(scrollPane);	// "Configurando" a cena
+	    mainScene = new Scene(scrollPane);	// "Configurando" a cena
 	    primaryStage.setScene(mainScene);		// "Montando" a cena no palco
 	    primaryStage.setTitle("Projeto - Modelo de aplicação desktop genérica");	// Título do palco
 	    primaryStage.show();			// Apresentando o palco
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
+    }
+    
+    public static Scene getMainScene() { //efetiva a exposição da referência
+	return mainScene;
     }
 
     public static void main(String[] args) {

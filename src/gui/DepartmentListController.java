@@ -47,7 +47,8 @@ public class DepartmentListController implements Initializable {
     @FXML
     private void onBtNewAction(ActionEvent event) {
 	Stage parentStage = Utils.currentStage(event);	// referência para o palco pai do próximo evento
-	createDialogForm("/gui/DepartmentForm.fxml", parentStage);
+	Department obj = new Department();		// objeto necessário no cadastro
+	createDialogForm(obj, "/gui/DepartmentForm.fxml", parentStage);
     }
     
     public void setDepartmentService(DepartmentService service) { //injenção de dependêcia
@@ -80,10 +81,14 @@ public class DepartmentListController implements Initializable {
 	tableViewDepartment.setItems(obsList);		    // carregando na tabela
     }
     
-    private void createDialogForm(String absoluteName, Stage parentStage) {
+    private void createDialogForm(Department obj, String absoluteName, Stage parentStage) {
 	try {
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 	    Pane pane = loader.load();	//carrega um novo painel
+	    
+	    DepartmentFormController controller = loader.getController();   //obtendo o controllador da classe
+	    controller.setEntity(obj);
+	    controller.updateFormData();
 	    
 	    /* Como se trata de janelas de diálogo, uma vez que são modais, elas devem ocorrer por cima de outras*/
 	    Stage dialogStage = new Stage();	// instanciamento de um novo palco

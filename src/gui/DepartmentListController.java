@@ -88,6 +88,7 @@ public class DepartmentListController implements Initializable {
 	    
 	    DepartmentFormController controller = loader.getController();   //obtendo o controllador da classe
 	    controller.setEntity(obj);
+	    controller.setService(new DepartmentService());
 	    controller.updateFormData();
 	    
 	    /* Como se trata de janelas de diálogo, uma vez que são modais, elas devem ocorrer por cima de outras*/

@@ -1,6 +1,7 @@
 package gui;
 
 import application.Main;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import java.io.IOException;
@@ -25,7 +26,7 @@ import javafx.stage.Stage;
 import model.entities.Department;
 import model.services.DepartmentService;
 
-public class DepartmentListController implements Initializable {
+public class DepartmentListController implements Initializable, DataChangeListener {
 
     private DepartmentService service;	// associação
     
@@ -89,6 +90,7 @@ public class DepartmentListController implements Initializable {
 	    DepartmentFormController controller = loader.getController();   //obtendo o controllador da classe
 	    controller.setEntity(obj);
 	    controller.setService(new DepartmentService());
+	    controller.subscribeDataChangeListener(this);
 	    controller.updateFormData();
 	    
 	    /* Como se trata de janelas de diálogo, uma vez que são modais, elas devem ocorrer por cima de outras*/
@@ -103,5 +105,10 @@ public class DepartmentListController implements Initializable {
 	catch (IOException e){
 	    Alerts.showAlert("IO Exception", "Erro ao carregar view", e.getMessage(), Alert.AlertType.ERROR);
 	}
+    }
+
+    @Override
+    public void onDataChanged() {
+	updateTableView();
     }
 }

@@ -1,4 +1,4 @@
-    package application;
+package application;
 
 import java.io.IOException;
 import javafx.application.Application;
@@ -17,7 +17,7 @@ public class Main extends Application {
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));	// Obtendo configurações da cena de um arquivo de extensão .fxml
 	    ScrollPane scrollPane = loader.load();	// Objeto principal (subclasse de Parent) da view
 	    
-	    scrollPane.setFitToHeight(true);		// Configurando ajuste do objeto ao redimensionamento da tela
+	    scrollPane.setFitToHeight(true);		// Configurando ajuste do objeto ao redimensionamento da janela
 	    scrollPane.setFitToWidth(true);
 	    
 	    mainScene = new Scene(scrollPane);	// "Configurando" a cena

@@ -28,22 +28,22 @@ public class MainViewController implements Initializable {
     @FXML
     private MenuItem menuItemAbout;
     
-    @FXML
+    @FXML /* Método-ação do botão Vendedores */
     public void onMenuItemSellerAction() {
 	System.out.println("onMenuItemSellerAction");
     }
     
-    @FXML
+    @FXML /* Método-ação do botão Departamentos */
     public void onMenuItemDepartmentAction() {
-	loadView("/gui/DepartmentList.fxml", (DepartmentListController controller) -> {
-	    controller.setDepartmentService(new DepartmentService());
+	loadView("/gui/DepartmentList.fxml", (DepartmentListController controller) -> { // carregando a view DepartamentList.fxml
+	    controller.setDepartmentService(new DepartmentService());	// Ações de inicialização
 	    controller.updateTableView();
 	});
     }
     
-    @FXML
+    @FXML /* Método-ação do botão Sobre */
     public void onMenuItemAboutAction() {
-	loadView("/gui/About.fxml", x -> {});
+	loadView("/gui/About.fxml", x -> {}); // carregando a view About.fxml
     }
     
     @Override

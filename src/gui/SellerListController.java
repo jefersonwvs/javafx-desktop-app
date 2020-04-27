@@ -5,6 +5,7 @@ import db.DbIntegrityException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +16,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -23,6 +26,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Seller;
 import model.services.SellerService;
@@ -64,7 +69,7 @@ public class SellerListController implements Initializable, DataChangeListener {
     private void onBtNewAction(ActionEvent event) {
 	Stage parentStage = Utils.currentStage(event);	// referência para o palco pai (SellerList.fxml) do próximo evento (SellerForm.fxml)
 	Seller obj = new Seller();		// objeto necessário no cadastro
-	//createDialogForm(obj, "/gui/SellerForm.fxml", parentStage);	// criando caixa de diálogo para cadastro de um novo departamento
+	createDialogForm(obj, "/gui/SellerForm.fxml", parentStage);	// criando caixa de diálogo para cadastro de um novo departamento
     }
 
     public void setSellerService(SellerService service) { //injenção de dependêcia
@@ -105,29 +110,29 @@ public class SellerListController implements Initializable, DataChangeListener {
     }
 
     /* Método que cria a caixa de diálogo, um formulário usado para inserir ou editar departamentos */
-//    private void createDialogForm(Seller obj, String absoluteName, Stage parentStage) {
-//	try {
-//	    FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName)); // carrega o arquivo "xxxxx.fxml"
-//	    Pane pane = loader.load();	//carrega um novo painel com o desenho do "xxxxx.fxml"
-//
-//	    SellerFormController controller = loader.getController();   //obtendo o controller do "xxxxx.fxml"
-//	    controller.setEntity(obj);	// associando um objeto de departamento ao controller
-//	    controller.setService(new SellerService()); // associando um objeto de serviço ao controller
-//	    controller.subscribeDataChangeListener(this);   // ???
-//	    controller.updateFormData(); // atualiza os dados do formulário com os dados do obj 
-//
-//	    /* Como se trata de janelas de diálogo, uma vez que são modais, elas devem ocorrer por cima de outras*/
-//	    Stage dialogStage = new Stage();	// instanciamento de um novo palco
-//	    dialogStage.setTitle("Insira os dados de um departamento");
-//	    dialogStage.setScene(new Scene(pane));  // configurando a cena com o painel desejado
-//	    dialogStage.setResizable(false);	    // palco não redimensionável
-//	    dialogStage.initOwner(parentStage);	    // pai da janela, janela anterior
-//	    dialogStage.initModality(Modality.WINDOW_MODAL); //janela travada até ser fechada salvando ou cancelando
-//	    dialogStage.showAndWait();	//mostra o palco e aguarda a inserção ou edição nos campos
-//	} catch (IOException e) {
-//	    Alerts.showAlert("IO Exception", "Erro ao carregar view", e.getMessage(), Alert.AlertType.ERROR);
-//	}
-//    }
+    private void createDialogForm(Seller obj, String absoluteName, Stage parentStage) {
+	try {
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName)); // carrega o arquivo "xxxxx.fxml"
+	    Pane pane = loader.load();	//carrega um novo painel com o desenho do "xxxxx.fxml"
+
+	    SellerFormController controller = loader.getController();   //obtendo o controller do "xxxxx.fxml"
+	    controller.setEntity(obj);	// associando um objeto de departamento ao controller
+	    controller.setService(new SellerService()); // associando um objeto de serviço ao controller
+	    controller.subscribeDataChangeListener(this);   // ???
+	    controller.updateFormData(); // atualiza os dados do formulário com os dados do obj 
+
+	    /* Como se trata de janelas de diálogo, uma vez que são modais, elas devem ocorrer por cima de outras*/
+	    Stage dialogStage = new Stage();	// instanciamento de um novo palco
+	    dialogStage.setTitle("Insira os dados de um vendedor");
+	    dialogStage.setScene(new Scene(pane));  // configurando a cena com o painel desejado
+	    dialogStage.setResizable(false);	    // palco não redimensionável
+	    dialogStage.initOwner(parentStage);	    // pai da janela, janela anterior
+	    dialogStage.initModality(Modality.WINDOW_MODAL); //janela travada até ser fechada salvando ou cancelando
+	    dialogStage.showAndWait();	//mostra o palco e aguarda a inserção ou edição nos campos
+	} catch (IOException e) {
+	    Alerts.showAlert("IO Exception", "Erro ao carregar view", e.getMessage(), Alert.AlertType.ERROR);
+	}
+    }
 
     @Override /* ??? */
     public void onDataChanged() {
@@ -149,9 +154,9 @@ public class SellerListController implements Initializable, DataChangeListener {
 		    return; // encerra, pois não há mais o que fazer
 		}
 		setGraphic(button); // colocando graficamente o botão
-//		button.setOnAction( // configurando qual será a ação do botão
-//			event -> createDialogForm( // abrindo a caixa de diálogo (SellerForm.fxml) para edição
-//				obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
+		button.setOnAction( // configurando qual será a ação do botão
+			event -> createDialogForm( // abrindo a caixa de diálogo (SellerForm.fxml) para edição
+				obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
 	    }
 	});
     }

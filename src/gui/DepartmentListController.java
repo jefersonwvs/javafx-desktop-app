@@ -115,6 +115,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 	    dialogStage.initModality(Modality.WINDOW_MODAL); //janela travada até ser fechada salvando ou cancelando
 	    dialogStage.showAndWait();	//mostra o palco e aguarda a inserção ou edição nos campos
 	} catch (IOException e) {
+	    e.printStackTrace();
 	    Alerts.showAlert("IO Exception", "Erro ao carregar view", e.getMessage(), Alert.AlertType.ERROR);
 	}
     }

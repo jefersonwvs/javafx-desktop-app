@@ -6,9 +6,11 @@ import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -171,18 +173,30 @@ public class SellerFormController implements Initializable {
 	ValidationException exception = new ValidationException("Validation error");	// exceção personalizada de modo a ser possível visualizar o erro respectivo a cada campo do formulário
 
 	obj.setId(Utils.tryParseToInt(txtId.getText()));    // transforma o valor do Id de String para Integer
-	if (txtName.getText() == null || txtName.getText().trim().equals("")) {	// se o campo Nome estiver vazio ou com somente espaços em branco
+	
+	if (txtName.getText() == null || txtName.getText().trim().equals("")) // se o campo Nome estiver vazio ou com somente espaços em branco
 	    exception.addError("name", "Campo não pode ser vazio"); // adiciona este erro à lista (no caso deste projeto será possível somente este erro)
+	obj.setName(txtName.getText());	// embora o dado possa estar inválido, ele ainda é setado
+	
+	if (txtEmail.getText() == null || txtEmail.getText().trim().equals(""))	// se o campo Nome estiver vazio ou com somente espaços em branco
+	    exception.addError("email", "Campo não pode ser vazio"); // adiciona este erro à lista (no caso deste projeto será possível somente este erro)
+	obj.setEmail(txtEmail.getText());	// embora o dado possa estar inválido, ele ainda é setado
+	
+	if (dpBirthDate.getValue() == null)
+	    exception.addError("birthDate", "Campo não pode ser vazio");
+	else {
+	    Instant instant = Instant.from(dpBirthDate.getValue().atStartOfDay(ZoneId.systemDefault()));
+	    obj.setBirthDate(Date.from(instant));
 	}
-	obj.setName(txtName.getText());	// embora o dado possa estar inválido, ele ainda setado
-	/*if (txtAdress.getText() ...
-	  if (txtMaxEmployess.getText() ...
-	  ...
-	 */
+	
+	if (txtBaseSalary.getText() == null || txtBaseSalary.getText().trim().equals(""))
+	    exception.addError("baseSalary", "Campo não pode ser vazio");
+	obj.setBaseSalary(Utils.tryParseToDouble(txtBaseSalary.getText()));
+	
+	obj.setDepartment(comboBoxDepartment.getValue());
+	
 	if (exception.getErrors().size() > 0) // se houver pelo menos um erro (reforçando: para este projeto será no máximo, pois o único campo que será preenchido manualmente é o Nome
-	{
 	    throw exception;	// lança a exceção
-	}
 	return obj; // passou pelo último if, o que quer dizer que os dados do formulário estão válidos e serão retornados para um método onde serão salvos no bd
     }
 
@@ -219,9 +233,10 @@ public class SellerFormController implements Initializable {
     /* Método que apresenta o erro proveniente de preenchimento inválido ao usuário */
     private void setErrorMessages(Map<String, String> errors) {
 	Set<String> fields = errors.keySet();	// armazena as chaves dos erros
-	if (fields.contains("name")) // se existe algum erro para o campo Nome
-	{
-	    labelErrorName.setText(errors.get("name"));	// seta a mensagem na respectiva label
-	}
+	
+	labelErrorName.setText(fields.contains("name") ? errors.get("name") : errors.get(""));	// seta a mensagem na respectiva label
+	labelErrorEmail.setText(fields.contains("email") ? errors.get("email") : errors.get(""));
+	labelErrorBirthDate.setText(fields.contains("birthDate") ? errors.get("birthDate") : errors.get(""));
+	labelErrorBaseSalary.setText(fields.contains("baseSalary") ? errors.get("baseSalary") : errors.get(""));
     }
 }

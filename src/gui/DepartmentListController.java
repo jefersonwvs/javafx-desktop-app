@@ -53,16 +53,16 @@ public class DepartmentListController implements Initializable, DataChangeListen
     @FXML
     private Button btNew;
 
-    private ObservableList<Department> obsList;  //Tipo de lista que pode ser visualizável em elementos do JavaFX 
+    private ObservableList<Department> obsList;  // Tipo de lista visualizável em elementos do JavaFX 
 
-    @FXML /*Método-ação do botão Novo*/
+    @FXML /* Método-ação do botão Novo */
     private void onBtNewAction(ActionEvent event) {
 	Stage parentStage = Utils.currentStage(event);	// referência para o palco pai (DepartmentList.fxml) do próximo evento (DepartmentForm.fxml)
 	Department obj = new Department();		// objeto necessário no cadastro
 	createDialogForm(obj, "/gui/DepartmentForm.fxml", parentStage);	// criando caixa de diálogo para cadastro de um novo departamento
     }
 
-    public void setDepartmentService(DepartmentService service) { //injenção de dependêcia
+    public void setDepartmentService(DepartmentService service) { // injenção de dependêcia
 	this.service = service;
     }
 
@@ -84,7 +84,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 
     /* Método que atualiza a tabela de departamentos */
     public void updateTableView() {
-	if (service == null) { //Precaução para caso o programador tenha esquecido de injetar a dependência
+	if (service == null) { // Precaução para caso o programador tenha esquecido de injetar a dependência
 	    throw new IllegalStateException("Service was null");
 	}
 	List<Department> list = service.findAll();	    // recebendo a lista de objetos do bd
@@ -97,23 +97,23 @@ public class DepartmentListController implements Initializable, DataChangeListen
     /* Método que cria a caixa de diálogo, um formulário usado para inserir ou editar departamentos */
     private void createDialogForm(Department obj, String absoluteName, Stage parentStage) {
 	try {
-	    FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName)); // carrega o arquivo "xxxxx.fxml"
-	    Pane pane = loader.load();	//carrega um novo painel com o desenho do "xxxxx.fxml"
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName)); // carrega o arquivo "xxxxxForm.fxml"
+	    Pane pane = loader.load();	// carrega um novo painel com o desenho do "xxxxx.fxml"
 
-	    DepartmentFormController controller = loader.getController();   //obtendo o controller do "xxxxx.fxml"
+	    DepartmentFormController controller = loader.getController();   // obtendo o controller do "xxxxxForm.fxml"
 	    controller.setEntity(obj);	// associando um objeto de departamento ao controller
 	    controller.setService(new DepartmentService()); // associando um objeto de serviço ao controller
 	    controller.subscribeDataChangeListener(this);   // ???
-	    controller.updateFormData(); // atualiza os dados do formulário com os dados do obj 
+	    controller.updateFormData(); // atualiza os dados do formulário com os dados do obj, que serão nulos quando o usuário for inserir um novo departamento 
 
-	    /* Como se trata de janelas de diálogo, uma vez que são modais, elas devem ocorrer por cima de outras*/
+	    /* Como se trata de janelas de diálogo, uma vez que são modais, elas devem ocorrer por cima de outras */
 	    Stage dialogStage = new Stage();	// instanciamento de um novo palco
 	    dialogStage.setTitle("Insira os dados de um departamento");
 	    dialogStage.setScene(new Scene(pane));  // configurando a cena com o painel desejado
 	    dialogStage.setResizable(false);	    // palco não redimensionável
 	    dialogStage.initOwner(parentStage);	    // pai da janela, janela anterior
 	    dialogStage.initModality(Modality.WINDOW_MODAL); //janela travada até ser fechada salvando ou cancelando
-	    dialogStage.showAndWait();	//mostra o palco e aguarda a inserção ou edição nos campos
+	    dialogStage.showAndWait();	// mostra o palco e aguarda a inserção ou edição nos campos
 	} catch (IOException e) {
 	    e.printStackTrace();
 	    Alerts.showAlert("IO Exception", "Erro ao carregar view", e.getMessage(), Alert.AlertType.ERROR);
@@ -167,7 +167,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 	});
     }
     
-    /* Método que intermedia a ação de remoção de um departamento, pois é uma ação que demanda confirmação*/
+    /* Método que intermedia a ação de remoção de um departamento, pois demanda confirmação */
     private void removeEntity(Department obj) {
 	/*result guarda a opção escolhida pelo usuário: OK ou Cancel*/
 	Optional<ButtonType> result = Alerts.showConfirmation("Confirmação", "Tem certeza de que deseja remover o departamento? "); // Mostrando o alerta de confirmação

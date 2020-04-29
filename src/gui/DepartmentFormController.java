@@ -22,7 +22,7 @@ import model.entities.Department;
 import model.exceptions.ValidationException;
 import model.services.DepartmentService;
 
-/* Classe controladora dos objetos e ações desenhadas no arquivo homônimo .fxml*/
+/* Classe controladora dos objetos e ações desenhadas no arquivo homônimo .fxml */
 public class DepartmentFormController implements Initializable {
 
     private Department entity;	// entidade que terá seus valores editados para inserção ou atualização conforme prevê a caixa de diálogo em questão
@@ -47,10 +47,12 @@ public class DepartmentFormController implements Initializable {
     @FXML
     private Button btCancel;
 
+    /* Método que seta a entidade. Encapsulamento */
     public void setEntity(Department entity) {
 	this.entity = entity;
     }
 
+    /* Método que seta o serviço. Encapsulamento */
     public void setService(DepartmentService service) {
 	this.service = service;
     }
@@ -97,7 +99,9 @@ public class DepartmentFormController implements Initializable {
 	Constraints.setTextFieldMaxLength(txtName, 30);	// restrição: campo do Nome aceita no máximo 30 caracteres
     }
     
-    /* Método para atualizar os campos do formulário */
+    /* Método para atualizar os campos do formulário. Para um novo departamento, a atualização do 
+    formulário consistirá em preencher os campos com os valores nulos, enquanto que para uma edição, 
+    tais campos serão preenchidos com os valores do bd */
     public void updateFormData() {
 	if (entity == null) // programação defensiva
 	    throw new IllegalStateException("Entity was null");
@@ -105,21 +109,19 @@ public class DepartmentFormController implements Initializable {
 	txtName.setText(entity.getName());
     }
     
-    /* Método que obtém os dados de todos os campos e armazena em objeto para ser armazenado no bd */
+    /* Método que obtém os dados de todos os campos do formulário e armazena em objeto.
+    Tal objeto é retornado para ser armazenado no bd */
     private Department getFormData() {
-	Department obj = new Department();
+	Department obj = new Department();  // instanciando obj
 	ValidationException exception = new ValidationException("Validation error");	// exceção personalizada de modo a ser possível visualizar o erro respectivo a cada campo do formulário
 	
 	obj.setId(Utils.tryParseToInt(txtId.getText()));    // transforma o valor do Id de String para Integer
 	if (txtName.getText() == null || txtName.getText().trim().equals("")){	// se o campo Nome estiver vazio ou com somente espaços em branco
-	    exception.addError("name", "Campo não pode ser vazio"); // adiciona este erro à lista (no caso deste projeto será possível somente este erro)
+	    exception.addError("name", "Campo não pode ser vazio"); // adiciona este erro à lista
 	}
-	obj.setName(txtName.getText());	// embora o dado possa estar inválido, ele ainda setado
-	/*if (txtAdress.getText() ...
-	  if (txtMaxEmployess.getText() ...
-	  ...
-	*/
-	if (exception.getErrors().size() > 0)	// se houver pelo menos um erro (reforçando: para este projeto será no máximo, pois o único campo que será preenchido manualmente é o Nome
+	obj.setName(txtName.getText());	// embora o dado possa estar inválido, ele ainda é setado, porém impossibilitará o obj de ser retornado
+	
+	if (exception.getErrors().size() > 0)	// se houver pelo menos um erro (reforçando: para este obj será no máximo um, pois o único campo que será preenchido manualmente é o Nome
 	    throw exception;	// lança a exceção
 	return obj; // passou pelo último if, o que quer dizer que os dados do formulário estão válidos e serão retornados para um método onde serão salvos no bd
     }
@@ -130,7 +132,7 @@ public class DepartmentFormController implements Initializable {
 	    listener.onDataChanged();
     }
     
-    /* Método que apresenta o erro proveniente de preenchimento inválido ao usuário */
+    /* Método que apresenta o erro proveniente de preenchimento inválido na interface gráfica */
     private void setErrorMessages(Map<String, String> errors) {
 	Set<String> fields = errors.keySet();	// armazena as chaves dos erros
 	if (fields.contains("name"))	// se existe algum erro para o campo Nome

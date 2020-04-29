@@ -11,7 +11,7 @@ public class Main extends Application {
 
     private static Scene mainScene; //referência "exposta", para ser possível carregar outras views na view principal
     
-    @Override
+    @Override /* Método por onde se inicia qualquer aplicação JavaFX */
     public void start(Stage primaryStage) {
 	try {
 	    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));	// Obtendo configurações da cena de um arquivo de extensão .fxml

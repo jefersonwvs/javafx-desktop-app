@@ -89,7 +89,7 @@ public class SellerFormController implements Initializable {
 	this.entity = entity;
     }
 
-    /*Método para configurar os serviços necessários */
+    /* Método para configurar os serviços necessários */
     public void setServices(SellerService service, DepartmentService depService) {
 	this.service = service;
 	this.departmentService = depService;

@@ -9,6 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+/*
+ * Classe onde se encontram todos os métodos, atributos e demais configurações
+ * necessárias para conectar com o bd, desconectar, liberar recursos etc
+ */
 public class DB {
 
     private static Connection conn = null;  // objeto para conexão com o BD
@@ -16,7 +20,7 @@ public class DB {
     /* Método para obter conexão com o BD */
     public static Connection getConnection() { 	
 	if (conn == null) { // verifica se o BD já não está conectado
-	    try {
+	   try {
 		Properties props = loadProperties();	// carrega as propriedades do BD
 		String url = props.getProperty("dburl");    // armazena a propriedade dburl em uma variável
 		conn = DriverManager.getConnection(url, props);	// conectando...
@@ -53,7 +57,7 @@ public class DB {
     public static void closeStatement(Statement st) {
 	if (st != null) {   
 	    try {
-		st.close();
+		st.close(); // liberando recurso
 	    } catch (SQLException e) {
 		throw new DbException(e.getMessage());
 	    }
@@ -64,7 +68,7 @@ public class DB {
     public static void closeResultSet(ResultSet rs) {
 	if (rs != null) {
 	    try {
-		rs.close();
+		rs.close(); // liberando recurso
 	    } catch (SQLException e) {
 		throw new DbException(e.getMessage());
 	    }
